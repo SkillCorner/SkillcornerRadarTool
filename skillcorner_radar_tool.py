@@ -42,6 +42,8 @@ class SkillCornerRadarTool(SkillcornerClient):
 
     # Requests & Sets off ball run data grouped by 'player,competition,team,position'.
     def request_data(self, season_id, competition_ids, minutes, matches):
+        self.off_ball_run_df = pd.DataFrame()
+
         for competition_id in competition_ids:
             print('Requesting data for competition_id ' + str(competition_id) + '...')
             api_response = super().get_in_possession_off_ball_runs({'season': season_id,
@@ -85,17 +87,17 @@ class SkillCornerRadarTool(SkillcornerClient):
         return self.ranked_position_df
 
     # Plots the radar for a given player (team & position required).
-    def plot_radar(self, player_name, team_name, position, theme):
+    def plot_radar(self, player_id, team_id, position, theme):
 
         # Retire player values from ranked_position_df.
-        player_df = self.ranked_position_df[(self.ranked_position_df['player_name'] == player_name) &
-                                            (self.ranked_position_df['team_name'] == team_name) &
+        player_df = self.ranked_position_df[(self.ranked_position_df['player_id'] == player_id) &
+                                            (self.ranked_position_df['team_id'] == team_id) &
                                             (self.ranked_position_df['position'] == position)]
 
         # If a single player could not be found exit.
         if len(player_df) != 1:
             print(
-                player_name + ' (' + team_name + ' - ' + position + ') could not be found. Check your inputs & if the player meets the minutes/match requirements of the initial data request.')
+                'player_id: ' + str(player_id) + ' (team_id: ' + str(team_id) + ' - ' + position + ') could not be found. Check your inputs & if the player meets the minutes/match requirements of the initial data request.')
             return None, None
 
         # Increasing or decreasing will affect all texts on the plot.
