@@ -1,7 +1,7 @@
 """
 SkillCorner Radar Tool
 Liam Bailey - SkillCorner - 27/01/2023
-This class inherits for the skillcorner client & genrates radar visualisations for off ball run data.
+This class inherits for the skillcorner client & generates radar visualisations for off ball run data.
 """
 from skillcorner.client import SkillcornerClient
 import matplotlib.pyplot as plt
@@ -97,7 +97,9 @@ class SkillCornerRadarTool(SkillcornerClient):
         # If a single player could not be found exit.
         if len(player_df) != 1:
             print(
-                'player_id: ' + str(player_id) + ' (team_id: ' + str(team_id) + ' - ' + position + ') could not be found. Check your inputs & if the player meets the minutes/match requirements of the initial data request.')
+                'player_id: ' + str(player_id) + ' (team_id: ' + str(team_id) + ' - ' + position +
+                ') could not be found. Check your inputs & if the player meets the minutes/match requirements of the initial data request.')
+
             return None, None
 
         # Increasing or decreasing will affect all texts on the plot.
@@ -302,9 +304,9 @@ class SkillCornerRadarTool(SkillcornerClient):
         return fig, ax
 
     # Runs player ranking & radar generation.
-    def rank_players_generate_radar(self, player_name, team_name, player_posisition, position_to_compare, theme):
+    def rank_players_generate_radar(self, player_id, team_id, player_position, position_to_compare, theme):
         self.filter_and_calculate_percentiles(position_to_compare)
         print(str(len(self.get_ranked_position_df())) + ' players in position selection: ' + ','.join(
             position_to_compare))
-        return self.plot_radar(player_name, team_name, player_posisition, theme)
+        return self.plot_radar(player_id, team_id, player_position, theme)
     
